@@ -1,5 +1,5 @@
-# loan-application-system
-Simple business loan application system
+# Loan Application System
+A simple business loan application system
 
 ## Setup and Run
 
