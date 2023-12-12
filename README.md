@@ -41,6 +41,6 @@ cd .\loan-application-system\client | npm install
 cd .\loan-application-system\client | npm start
 ```
 8. If all went ok, front-end application will be launched in a new browser on http://localhost:3000
-![image](https://github.com/sanjdi/loan-application-system/assets/135525812/6c4c288d-f458-4ce0-8111-7f4e64d89591)
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/342c703d-1465-4fe8-949b-712e33c15095)
 
 
