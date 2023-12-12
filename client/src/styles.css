@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+    background-color: #fff;
+}
+
+th, td {
+    width: 200px;
+}
+
+.app {
+    justify-content: center;
+}
+
+.raw {
+    display: table-row;
+}
+
+.cell {
+    display: table-cell;
+    width: 400px;
+}
+
+.input {
+    width: 200px;
+}
+
+.m {
+    text-align: right
+}
+
+.n {
+    text-align: center
+}

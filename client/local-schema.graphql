@@ -1,0 +1,9 @@
+type RoleData {
+  id: String!
+  name: String!
+}
+
+extend type Query {
+  activeRole: RoleData!
+  roles: [RoleData!]!
+}
