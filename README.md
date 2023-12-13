@@ -22,7 +22,7 @@ A simple business loan application system with following capabilities.
 
 #### Loan Microservice
 
-* Set of [NestJS](https://nestjs.com/) modules to support Bussiness and Loan logic.
+* Set of [NestJS](https://nestjs.com/) modules to Loan bussiness logic.
 * Runs on a [Nodejs](https://nodejs.org/en) server.
   
 #### Accounting Provider microservice client
@@ -35,6 +35,11 @@ A simple business loan application system with following capabilities.
 
 * A [NestJS](https://nestjs.com/) microservice that provides Balance Sheet data on request.
 * Runs on a [Nodejs](https://nodejs.org/en) server.
+
+## Design
+
+### Class Diagram
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/22e5fd0f-6ef2-4770-aa9c-55b685c3a7de)
 
 ## Setup and Run
 
