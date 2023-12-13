@@ -40,7 +40,10 @@ A simple business loan application system with following capabilities.
 
 Please follow bellow steps to install and run the application in your local machine. 
 ### Prerequisites
-* [Node.js](https://nodejs.org/en/docs) - Please install Node.js in your local machine.
+Please install bellow tools / librraries in your local machine.
+* [Git](https://www.atlassian.com/git/tutorials/install-git)
+* [Node.js](https://nodejs.org/en/download)
+* [Docker Engine](https://docs.docker.com/engine/install/) 
 
 ### Steps
 Open a command prompt (or terminal) and execute bellow commands.
