@@ -1,5 +1,40 @@
 # Loan Application System
-A simple business loan application system
+A simple business loan application system with following capabilities.
+
+### Frontend
+
+#### Loan Application Form
+
+* On initiation, fetch bellow initital form data from the backend.
+  - List of Businesses
+  - List of Accounting Providers
+* On selecting a value for Accoung Provider, fetch Balance Sheet data of the Business from the backend by selected Accounting Provider.
+* On submit the form, fetch Loan Approval data from the backend.
+* On Show History request, fetch previous Loan data of the bussiness from the backend.
+* Implemented in [ReactJS](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
+
+### Backend
+
+#### Loan Database
+
+* A [MongoDB](https://www.mongodb.com/) to store Business and Loan data.
+* Runs on a [Docker](https://www.docker.com/) container.
+
+#### Loan Microservice
+
+* Set of [NestJS](https://nestjs.com/) modules to support Bussiness and Loan logic.
+* Runs on a [Nodejs](https://nodejs.org/en) server.
+  
+#### Accounting Provider microservice client
+
+* A [NestJS](https://nestjs.com/) module to support Accounting Provider logic.
+* This is client implementation of external Accounting Providers (ie. Xero and MYOB microservices).
+* Runs on a [Nodejs](https://nodejs.org/en) server.
+
+#### Xero microservice
+
+* A [NestJS](https://nestjs.com/) microservice that provides Balance Sheet data on request.
+* Runs on a [Nodejs](https://nodejs.org/en) server.
 
 ## Setup and Run
 
