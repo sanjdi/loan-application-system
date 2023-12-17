@@ -64,26 +64,15 @@ cd ./repo
 ```sh
 git clone https://github.com/sanjdi/loan-application-system.git
 ```
-4. To run the loan-microservice and database, execute
+4. Execute bellow commands in seperate terminal windows.
 ```sh
-cd .\loan-application-system\server\loan-microservice | npm install
-cd .\loan-application-system\server\loan-microservice | docker-compose up
-```
-5. Open a new terminal window and execute
-```sh
-cd .\loan-application-system\server\loan-microservice | npm run start:dev
-```
-6. To run xero-microservice, open a new terminal window and execute
-```sh
-cd .\loan-application-system\server\xero-microservice | npm install
-cd .\loan-application-system\server\xero-microservice | npm run start:dev
-```
-6. To run front-end application, open a new terminal window and execute
-```sh
-cd .\loan-application-system\client | npm install
+cd .\loan-application-system | docker-compose up
+cd .\loan-application-system\server\gateway | npm run start:dev
+cd .\loan-application-system\server\business | npm run start:dev
+cd .\loan-application-system\server\loan | npm run start:dev
 cd .\loan-application-system\client | npm start
 ```
-8. If all went ok, front-end application will be launched in a new browser on http://localhost:3000
+5. If all went ok, front-end application will be launched in a new browser on http://localhost:3000
 ![image](https://github.com/sanjdi/loan-application-system/assets/135525812/342c703d-1465-4fe8-949b-712e33c15095)
 
 
