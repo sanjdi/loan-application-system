@@ -10,7 +10,6 @@ const App = () => {
         <section>
           <h2>Application Form</h2>
           <LoanApplicationForm />
-          <hr />
         </section>
       </main>
     </div>

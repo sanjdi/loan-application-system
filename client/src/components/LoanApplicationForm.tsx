@@ -14,7 +14,7 @@ type AccountingProviderType = {
 };
 
 interface FormData {
-  companyName: string;
+  companyId: string;
   founded: Date | null;
   amount: number;
   accontingProvider: string;
@@ -27,6 +27,12 @@ interface Balance {
   assetsValue: number;
 }
 
+interface ApprovalData {
+  approvalStatus?: string;
+  approvedAmount?: number;
+  approvalScore?: number;
+}
+
 export interface LoanApplicationFormProps {
   companies: [{ id: string; name: string; founded: string }];
   accountingProviders: [{ id: string; name: string }];
@@ -34,7 +40,7 @@ export interface LoanApplicationFormProps {
 
 const LoanApplicationForm = () => {
   const [formData, setFormData] = useState<FormData>({
-    companyName: '',
+    companyId: '',
     founded: null,
     amount: 2000,
     accontingProvider: '',
@@ -42,38 +48,42 @@ const LoanApplicationForm = () => {
   const [companies, setCompanies] = useState([]);
   const [accountingProviders, setAccountingProviders] = useState([]);
   const [balanceSheet, setBalanceSheet] = useState([]);
-  const [selectedCompanyName, setSelectedCompanyName] = useState<string>();
-  const [selectedAccontingProvider, setSelectedAccontingProvider] = useState<string>();
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>();
+  const [selectedAccontingProvider, setSelectedAccontingProvider] =
+    useState<string>();
+  const [approvalData, setApprovalData] = useState<ApprovalData | null>(null);
 
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:8020/loans/init-application/'
+          'http://localhost:3002/loan-applications/init'
         );
         const initialData = response.data;
-        // console.log(`initialData=${JSON.stringify(initialData)}`);
-        // console.log(`companies=${initialData.companies}`);
-        // console.log(`accountingProviders=${initialData.accountingProviders}`);
-        setCompanies(initialData.companies);
-        setAccountingProviders(initialData.accountingProviders);
+        console.log(`initialData=${JSON.stringify(initialData)}`);
+        console.log(`companies=${initialData.companies}`);
+        console.log(`accountingProviders=${initialData.accountingProviders}`);
+        setCompanies(initialData.data.companies);
+        setAccountingProviders(initialData.data.accountingProviders);
+        setSelectedCompanyId(initialData.data.companies[0]);
       } catch (error: any) {
         console.error('Error fetching initial data:', error.message);
       }
     };
 
-    fetchInitialData();
+    fetchInitialData();     
   }, []);
 
   useEffect(() => {
     const fetchBalanceSheet = async () => {
-      if (formData.companyName && formData.accontingProvider) {
+      if (selectedCompanyId && selectedAccontingProvider) {
         try {
+          console.log(`useEffect selectedCompanyId=${selectedCompanyId}  selectedAccontingProvider=${selectedAccontingProvider}`);
           const response = await axios.get(
-            `http://localhost:8020/accounting-providers/${formData.accontingProvider}/${formData.companyName}/2010/03`
+            `http://localhost:3002/accounting-providers/${formData.accontingProvider}/${formData.companyId}`
           );
           console.log(`response.data=${JSON.stringify(response.data)}`);
-          setBalanceSheet(response.data.sheet);
+          setBalanceSheet(response.data.data.balanceSheet.sheet);
         } catch (error: any) {
           console.error('Error fetching account balance:', error.message);
         }
@@ -81,32 +91,44 @@ const LoanApplicationForm = () => {
     };
 
     fetchBalanceSheet();
-  }, [formData.companyName, formData.accontingProvider]);
+  // }, [selectedCompanyId, selectedAccontingProvider]);
+  }, [formData.companyId, formData.accontingProvider]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-    if (name === 'companyName') setSelectedCompanyName(value);
-
-    if (name === 'accontingProvider') setSelectedAccontingProvider(value);
   };
 
-  const handleAccontingProviderChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
+    if (name === 'companyId') setSelectedCompanyId(value);
+    if (name === 'accontingProvider') setSelectedAccontingProvider(value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    if (approvalData) setApprovalData(null);
+    // console.log(`handleChange formData=${JSON.stringify(formData)}`);
+    // console.log(`handleChange name=${name}  value=${value}  selectedCompanyId=${selectedCompanyId}  selectedAccontingProvider=${selectedAccontingProvider}`);
+    // console.log(`handleChange formData=${JSON.stringify(formData)}`);
   };
 
   const handleDateChange = (date: Date | null) => {
     setFormData((prevData) => ({ ...prevData, founded: date }));
   };
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     console.log(`formData=${JSON.stringify(formData)}`);
-    // fetch('/some-api', { method: form.method, body: formData });
+    try {
+      const response = await axios.post(
+        'http://localhost:3002/loan-applications/',
+        formData
+      );
+      console.log(`response.data=${JSON.stringify(response.data)}`);
+      setApprovalData(response.data.data.approval);
+    } catch (error: any) {
+      console.error('Error submitting form:', error.message);
+    }
   }
 
   function formatDate(date: Date, format: string): string {
@@ -128,7 +150,7 @@ const LoanApplicationForm = () => {
 
   return (
     <div>
-      <form method='post' onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className='row'>
           <div className='cell'>
             <label>Pick the name of your business:</label>
@@ -136,16 +158,16 @@ const LoanApplicationForm = () => {
           <div className='cell'>
             <select
               className='input'
-              name='companyName'
-              value={formData.companyName}
-              onChange={handleChange}
+              name='companyId'
+              value={formData.companyId}
+              onChange={handleSelectChange}
               required
             >
               <option value='' disabled>
                 Select...
               </option>
               {companies.map((item: CompanyType) => (
-                <option key={item.id} value={item.name}>
+                <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
               ))}
@@ -158,7 +180,7 @@ const LoanApplicationForm = () => {
           </div>
           <div className='cell'>
             <DatePicker
-              selected={formData.founded}
+              selected={formData.founded ? formData.founded : new Date()}
               onChange={handleDateChange}
               dateFormat='dd/MM/yyyy'
               isClearable
@@ -191,7 +213,7 @@ const LoanApplicationForm = () => {
             <select
               name='accontingProvider'
               value={formData.accontingProvider}
-              onChange={handleAccontingProviderChange}
+              onChange={handleSelectChange}
               className='input'
               required
             >
@@ -206,31 +228,60 @@ const LoanApplicationForm = () => {
             </select>
           </div>
         </div>
-        {balanceSheet && 
-        <div>
-        <h3>Balance Sheet</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Month</th>
-              <th>Profit or Loss</th>
-              <th>Assets Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {balanceSheet.map((item: Balance) => (
-              <tr key={item.year + item.month}>
-                <td className="n">{item.year}</td>
-                <td className="n">{item.month}</td>
-                <td className="m">{`$${item.profitOrLoss.toFixed(2)}`}</td>
-                <td className="m">{`$${item.assetsValue.toFixed(2)}`}</td>
+        {!approvalData && balanceSheet && (
+          <div>
+            <h3>Balance Sheet</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Month</th>
+                  <th>Profit or Loss</th>
+                  <th>Assets Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {balanceSheet.map((item: Balance) => (
+                  <tr key={item.year + "" + item.month}>
+                    <td className='n'>{item.year}</td>
+                    <td className='n'>{item.month}</td>
+                    <td className='m'>{`$${item.profitOrLoss.toFixed(2)}`}</td>
+                    <td className='m'>{`$${item.assetsValue.toFixed(2)}`}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {approvalData && approvalData!.approvalStatus && <h3>Application Status</h3>}
+        {approvalData && approvalData!.approvalStatus === 'approved' && (
+          <div>
+            <h4 className='green'>
+              Congratulations, your loan application is approved!
+            </h4>
+            <table>
+              <tr>
+                <td>
+                  <label>Approved amount: </label>
+                </td>
+                <td>{approvalData!.approvalScore! * formData.amount}</td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-        }
+              <tr>
+                <td>
+                  <label>Pre-assessment score:</label>
+                </td>
+                <td>{approvalData!.approvalScore}%</td>
+              </tr>
+            </table>
+          </div>
+        )}
+        {approvalData && approvalData!.approvalStatus === 'rejected' && (
+          <div>
+            <h4 className='red'>
+              We are sorry, your loan application is not approved.
+            </h4>
+          </div>
+        )}
         <button type='submit'>Submit</button>
       </form>
     </div>
