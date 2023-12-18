@@ -1,7 +1,24 @@
 # Loan Application System
-A simple business loan application system with following capabilities.
+This simple business loan application system comes with following services and capabilities.
+
+## Design
+
+### Architecture
+A microservices architecture with a modular and extensible design pattern is used to implement the functionality.
+
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/45e44488-1ab5-4a11-bc8a-aaad949b60ab)
+
+Accounting Service interface defines the getBalanceSheet() prtotype. All client services of external accounting providers (such as Xero and MYOB) will implement this interface.
+
+### Class Diagram
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/5d2a46c0-4a41-48e2-a98c-454b5dc6f7a1)
+
+## Implementation
 
 ### Frontend
+
+* Implemented with [ReactJS](https://react.dev/) in [TypeScript](https://www.typescriptlang.org/)
+* Runs on a [Docker](https://www.docker.com/) container.
 
 #### Loan Application Form
 
@@ -9,37 +26,30 @@ A simple business loan application system with following capabilities.
   - List of Businesses
   - List of Accounting Providers
 * On selecting a value for Accoung Provider, fetch Balance Sheet data of the Business from the backend by selected Accounting Provider.
-* On submit the form, fetch Loan Approval data from the backend.
-* On Show History request, fetch previous Loan data of the bussiness from the backend.
-* Implemented in [ReactJS](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
+* On submit the form, fetch Pre Assessment and Loan Approval data from the backend.
 
 ### Backend
 
-#### Loan Database
+* Runs on several [Docker](https://www.docker.com/) containers that host [Nodejs](https://nodejs.org/en) and [MongoDB](https://www.mongodb.com/).
+* Implemented with [NestJS](https://nestjs.com/) in [TypeScript](https://www.typescriptlang.org/).
 
-* A [MongoDB](https://www.mongodb.com/) to store Business and Loan data.
-* Runs on a [Docker](https://www.docker.com/) container.
+#### API Gateway
 
-#### Loan Microservice
-
-* Set of [NestJS](https://nestjs.com/) modules to Loan bussiness logic.
-* Runs on a [Nodejs](https://nodejs.org/en) server.
+* A [NestJS](https://nestjs.com/) module that implement routing of requests to backend services.
   
-#### Accounting Provider microservice client
+#### Loan Service
 
-* A [NestJS](https://nestjs.com/) module to support Accounting Provider logic.
-* This is client implementation of external Accounting Providers (ie. Xero and MYOB microservices).
-* Runs on a [Nodejs](https://nodejs.org/en) server.
+* A [NestJS](https://nestjs.com/) microservice with a set of modules that implement Application and Service Provider logic.
+* Use a [MongoDB](https://www.mongodb.com/) to store application records.
+  
+#### Business Service
 
-#### Xero microservice
+* A [NestJS](https://nestjs.com/) microservice with a module that implement logic for storing and retriving Businesses.
+* Use a [MongoDB](https://www.mongodb.com/) to store records.
 
-* A [NestJS](https://nestjs.com/) microservice that provides Balance Sheet data on request.
-* Runs on a [Nodejs](https://nodejs.org/en) server.
+#### Xero and MYOB
 
-## Design
-
-### Class Diagram
-![image](https://github.com/sanjdi/loan-application-system/assets/135525812/22e5fd0f-6ef2-4770-aa9c-55b685c3a7de)
+* Simulated with [NestJS](https://nestjs.com/) service that implements the Accounting Service interface.
 
 ## Setup and Run
 
