@@ -52,27 +52,26 @@ Please install bellow tools / librraries in your local machine.
 
 ### Steps
 Open a command prompt (or terminal) and execute bellow commands.
-1. Create a local folder.
+1. Execute bellow commands in a terminal window. 
 ```sh
 mkdir repo
-```
-2. Navigate to the local folder.
-```sh
 cd ./repo
-```
-3. Clone the remote git repository. Remote repository url is https://github.com/sanjdi/loan-application-system.git
-```sh
 git clone https://github.com/sanjdi/loan-application-system.git
+cd .\loan-application-system | docker compose up -d
 ```
-4. Execute bellow commands in seperate terminal windows.
-```sh
-cd .\loan-application-system | docker-compose up
-cd .\loan-application-system\server\gateway | npm run start:dev
-cd .\loan-application-system\server\business | npm run start:dev
-cd .\loan-application-system\server\loan | npm run start:dev
-cd .\loan-application-system\client | npm start
-```
-5. If all went ok, front-end application will be launched in a new browser on http://localhost:3000
-![image](https://github.com/sanjdi/loan-application-system/assets/135525812/342c703d-1465-4fe8-949b-712e33c15095)
+2. Run the web interface in a browser. url is http://localhost:3000
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/cd8694f0-d12c-40a7-9bde-d1fd7e6c775a)
+
+3. Balance sheet will be shown after selecting values for both Business Name and Accounting Provider  
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/a2e2605d-a700-4b29-b483-cc065874be70)
+
+4. Press Submit to view the Application Status.
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/b4972490-c4e2-49ad-8eec-a15a60182e7e)
+
+4. Press Try Again a with different founding date. ie. if the business was started less than a one year ago.
+![image](https://github.com/sanjdi/loan-application-system/assets/135525812/11bd2187-74d6-484d-a773-16a121458819)
+
+
+
 
 
