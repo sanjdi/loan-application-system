@@ -84,7 +84,7 @@ const LoanApplicationForm = () => {
         try {
           // console.log(`useEffect selectedCompanyId=${selectedCompanyId}  selectedAccontingProvider=${selectedAccontingProvider}`);
           const response = await axios.get(
-            //`http://gateway:3002/accounting-providers/${formData.accontingProvider}/${formData.companyId}`
+            //`http://gateway:3002/accounting-providers/${formData.accontingProvider}/${formData.companyId}/balance-sheet`
             `http://localhost:3002/accounting-providers/${formData.accontingProvider}/${formData.companyId}/balance-sheet`
           );
           console.log(`response=${JSON.stringify(response)}`);
@@ -145,6 +145,7 @@ const LoanApplicationForm = () => {
   
   };
 
+  // eslint-disable-next-line
   function formatDate(date: Date, format: string): string {
     if (date) {
       format = format.replace('yyyy', '' + date.getFullYear());

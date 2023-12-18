@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
     const app = await NestFactory.createMicroservice(AppModule, {
       transport: Transport.TCP,
       options: {
-        host: 'localhost', //'business',
+        host: 'business', //'localhost',
         port: 8888,
       },
     });

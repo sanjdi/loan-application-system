@@ -1,25 +1,60 @@
 version: "3"
 
 services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: loan-web
+    ports:
+      - '3000:3000'
 
+  gateway:
+    build:
+      context: ./server/gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - '3002:3002'
+
+  business:
+    build:
+      context: ./server/business
+      dockerfile: Dockerfile
+    expose:
+      - '8888'
+    container_name: business
+    env_file:
+      - .env
+    depends_on:
+      mongo: 
+        condition: service_started
+        restart: true
+    links:
+      - mongo
+
+  loan:
+    build:
+      context: ./server/loan
+      dockerfile: Dockerfile
+    expose:
+      - '8889'
+    container_name: loans
+    env_file:
+      - .env
+    depends_on:
+      mongo: 
+        condition: service_started
+        restart: true
+    links:
+      - mongo
       
-  db:
+  mongo:
     image: mongo:latest
-    container_name: db
+    container_name: mongo
     expose:  
       - '27017'  
-    ports:
-      - '27017:27017'
     env_file:
       - .env
     volumes:
       - ./server/db/init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    networks:
-      back-tier:
-        aliases: 
-          - mongo
-networks:
-  front-tier:
-    driver: bridge
-  back-tier:
-    driver: bridge

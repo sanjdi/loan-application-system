@@ -11,7 +11,7 @@ import { AccountingProvidersController } from './accounting-providers.controller
         name: 'BUSINESS_SERVICE',
         transport: Transport.TCP, 
         options: {
-          host: 'localhost', //'business',
+          host: 'business', //'localhost',
           port: 8888,
         },
       },
@@ -21,7 +21,7 @@ import { AccountingProvidersController } from './accounting-providers.controller
         name: 'LOANS_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost', //'loans',
+          host: 'loans', //'localhost',
           port: 8889,
         },
       },
@@ -31,7 +31,7 @@ import { AccountingProvidersController } from './accounting-providers.controller
         name: 'ACCOUNTING_PROVIDERS_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost', //'loans',
+          host: 'loans', //'localhost',
           port: 8889,
         },
       },
