@@ -54,8 +54,6 @@ Please install bellow tools / librraries in your local machine.
 Open a command prompt (or terminal) and execute bellow commands.
 1. Execute bellow commands in a terminal window. 
 ```sh
-mkdir repo
-cd ./repo
 git clone https://github.com/sanjdi/loan-application-system.git
 cd .\loan-application-system | docker compose up -d
 ```
