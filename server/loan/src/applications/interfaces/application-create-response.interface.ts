@@ -1,8 +1,8 @@
-import { ApplicationApproval } from './application-approval.interface';
+import { Application } from './application.interface';
 
 export interface ApplicationCreateResponse {
   status: number;
   message: string;
-  applicationApproval: ApplicationApproval | null;
+  application: Application | null;
   errors: { [key: string]: any } | null;
 }

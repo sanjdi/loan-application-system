@@ -16,7 +16,7 @@ export class ApplicationService {
 
   async createApplication(
     createApplicationDto: CreateApplicationDto
-  ): Promise<ApplicationApproval> {
+  ): Promise<Application> {
     const companyId = createApplicationDto.companyId;
 
     // Perform pre-assement
@@ -42,7 +42,7 @@ export class ApplicationService {
     await createdLoanApplication.save();
 
     // Return the response DTO
-    return applicationApproval;
+    return createdLoanApplication;
   }
 
   private async summariseApplication({
@@ -73,7 +73,7 @@ export class ApplicationService {
       preAssementStatus: 'completed',
       score: 60,
       preAssementLoanAmount: 200,
-      reasons: null,
+      age: this.getAge(dateFounded),
     };
     return preAssessmentSummary;
   }
@@ -83,22 +83,28 @@ export class ApplicationService {
     preAssessmentSummary: ApplicationPreAssessment
   ): ApplicationApproval {
     return {
-      approvalStatus: this.isFoundedDateOk(createApplicationDto.dateFounded)
+      approvalStatus: this.isCompanyAgeOk(preAssessmentSummary.age)
         ? 'approved'
         : 'rejected',
-      approvalScore: this.isFoundedDateOk(createApplicationDto.dateFounded)
+      approvalScore: this.isCompanyAgeOk(preAssessmentSummary.age)
         ? preAssessmentSummary.score
         : 0,
     };
   }
 
-  private isFoundedDateOk(value: string): boolean {
-/*     const today: Date = new Date();
+  /*
+  * Check if the company is more than 1 years old
+  */
+  private isCompanyAgeOk(value: number): boolean {
+    return value >= 1;
+  }
+
+  private getAge(value: string): number {
+    const today: Date = new Date();
     today.setHours(0, 0, 0, 0);
     const founded: Date = new Date(value);
     founded.setHours(0, 0, 0, 0);
-    return today.getTime() - founded.getTime() >= 31556926000; */
-    return true;
+    return Math.round((today.getTime() - founded.getTime()) / 31556926000 * 10) / 10;
   }
 
   public async find(params: { name: string }): Promise<Application[]> {

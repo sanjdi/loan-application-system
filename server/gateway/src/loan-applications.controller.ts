@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Inject, Param, HttpStatus, HttpException, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Inject,
+  Param,
+  HttpStatus,
+  HttpException,
+  Body,
+} from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
 import { ServiceLoansSearchApplicationResponse } from './interfaces/application/service-loans-search-application-response.interface';
@@ -16,9 +25,10 @@ export class LoanApplicationsController {
 
   @Get()
   async getLoanApplications() {
-    const response: ServiceLoansSearchApplicationsResponse = await firstValueFrom(
-      this.loansServiceClient.send('get_applications', {}),
-    );
+    const response: ServiceLoansSearchApplicationsResponse =
+      await firstValueFrom(
+        this.loansServiceClient.send('get_applications', {}),
+      );
 
     return {
       message: response.message,
@@ -28,7 +38,7 @@ export class LoanApplicationsController {
       errors: null,
     };
   }
-/* 
+  /* 
   @Get(':id')
   async getLoanApplicationById(@Param('id') id: string) {
     const response: ServiceLoansSearchApplicationResponse = await firstValueFrom(
@@ -44,9 +54,8 @@ export class LoanApplicationsController {
       };
     } */
 
-    
   @Get('init')
-  public async initLoanApplication(): Promise<InitApplicationResponseDto>  {
+  public async initLoanApplication(): Promise<InitApplicationResponseDto> {
     // const response: ServiceLoansInitApplicationResponse = await firstValueFrom(
     //   this.loansServiceClient.send('init_application', {}),
     // );
@@ -60,43 +69,49 @@ export class LoanApplicationsController {
     //   errors: null,
     // };
 
-    
     return {
       message: null,
       data: {
-        companies: [{ "id": "1", "name": "WaterGardenInc", "owner": "Jack"}, {"id": "2", "name": "RentACar", "owner": "Mark"}],
-        accountingProviders: [{ "id": "xero", "name": "Xero"}, {"id": "myob", "name": "MYOB"}],
+        companies: [
+          { id: '1', name: 'WaterGardenInc', owner: 'Jack' },
+          { id: '2', name: 'RentACar', owner: 'Mark' },
+        ],
+        accountingProviders: [
+          { id: 'xero', name: 'Xero' },
+          { id: 'myob', name: 'MYOB' },
+        ],
       },
       errors: null,
     };
   }
 
-    @Post()
+  @Post()
   public async createLoanApplication(
     @Body() userRequest: CreateApplicationDto,
   ): Promise<CreateApplicationResponseDto> {
-
-    const createUserResponse = await firstValueFrom(
+    const createApplicationResponse = await firstValueFrom(
       this.loansServiceClient.send('create_application', userRequest),
     );
-    if (createUserResponse.status !== HttpStatus.CREATED) {
+    if (createApplicationResponse.status !== HttpStatus.CREATED) {
       throw new HttpException(
         {
-          message: createUserResponse.message,
+          message: createApplicationResponse.message,
           data: null,
-          errors: createUserResponse.errors,
+          errors: createApplicationResponse.errors,
         },
-        createUserResponse.status,
+        createApplicationResponse.status,
       );
     }
 
+    console.log(`createUserResponse .. = ${JSON.stringify(createApplicationResponse)}`);
+    
     return {
-      message: createUserResponse.message,
+      message: createApplicationResponse.message,
       data: {
-        approval: createUserResponse.applicationApproval,
+        approval: createApplicationResponse.application.applicationApproval,
+        preAssessment: createApplicationResponse.application.applicationPreAssessment,
       },
       errors: null,
     };
   }
-
 }

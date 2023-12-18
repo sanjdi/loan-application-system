@@ -16,14 +16,14 @@ export class Application {
       preAssementStatus: String,
       score: Number,
       preAssementLoanAmount: Number,
-      reasons: String,
+      age: Number,
     },
   })
   applicationPreAssessment: {
     preAssementStatus: string;
     score: number;
     preAssementLoanAmount: number;
-    reasons: string;
+    age: number;
   };
 
   @Prop({

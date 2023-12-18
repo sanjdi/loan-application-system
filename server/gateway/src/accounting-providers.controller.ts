@@ -33,7 +33,7 @@ export class AccountingProvidersController {
     };
   }
 
-  @Get(':provider/:companyId')
+  @Get(':provider/:companyId/balance-sheet')
   async getBalanceSheet(
     @Param('provider') provider: string,
     @Param('companyId') companyId: string,
@@ -46,10 +46,11 @@ export class AccountingProvidersController {
         }),
       );
 
+      console.log(`gateway getBalanceSheet() response=${JSON.stringify(response)}`)
     return {
       message: response.message,
       data: {
-        balanceSheet: response,
+        balanceSheet: response.sheet,
       },
       errors: null,
     };

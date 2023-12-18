@@ -76,18 +76,18 @@ export class ApplicationController {
 
     if (inputParams) {
         try {
-          const applicationApproval = await this.applicationService.createApplication(inputParams);
+          const response = await this.applicationService.createApplication(inputParams);
           result = {
             status: HttpStatus.CREATED,
             message: 'application_create_success',
-            applicationApproval: applicationApproval,
+            application: response,
             errors: null,
           };
         } catch (e) {
           result = {
             status: HttpStatus.PRECONDITION_FAILED,
             message: 'application_create_precondition_failed',
-            applicationApproval: null,
+            application: null,
             errors: e.errors,
           };
         }
@@ -95,7 +95,7 @@ export class ApplicationController {
       result = {
         status: HttpStatus.BAD_REQUEST,
         message: 'application_create_bad_request',
-        applicationApproval: null,
+        application: null,
         errors: null,
       };
     }
@@ -149,12 +149,6 @@ export class ApplicationController {
     }
 
     return result;
-  }
-
-  createApplicationDto = {
-    companyId: "1",
-    loanAmount: 2000,
-    dateFounded: '01/01/2010'
   }
   
   /* TODO
